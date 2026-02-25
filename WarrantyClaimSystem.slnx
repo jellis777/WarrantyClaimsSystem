@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Warranty.Api/Warranty.Api.csproj" />
+    <Project Path="src/Warranty.Application/Warranty.Application.csproj" />
+    <Project Path="src/Warranty.Domain/Warranty.Domain.csproj" />
+    <Project Path="src/Warranty.Infrastructure/Warranty.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Warranty.Api.IntegrationTests/Warranty.Api.IntegrationTests.csproj" />
+    <Project Path="tests/Warranty.Domain.Tests/Warranty.Domain.Tests.csproj" />
+  </Folder>
+</Solution>

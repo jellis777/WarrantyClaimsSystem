@@ -1,41 +1,36 @@
+using Microsoft.EntityFrameworkCore;
+using Warranty.Application.Interfaces;
+using Warranty.Application.Services;
+using Warranty.Infrastructure.Persistence;
+using Warranty.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// 1. Tell the system where the database lives
+builder.Services.AddDbContext<WarrantyDbContext>(options =>
+    options.UseSqlite("Data Source=warranty.db"));
+
+// 2. Tell the system how to get a ClaimRepository
+builder.Services.AddScoped<IClaimRepository, ClaimRepository>();
+
+// 3. Tell the system how to get SubmitClaimService
+builder.Services.AddScoped<SubmitClaimService>();
+
+// 4. Enable controllers
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.MapOpenApi();
+    var db = scope.ServiceProvider.GetRequiredService<WarrantyDbContext>();
+    db.Database.EnsureCreated();
 }
 
-app.UseHttpsRedirection();
+// 5. Map controllers to routes
+app.MapControllers();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
+// 6. Run the app
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+

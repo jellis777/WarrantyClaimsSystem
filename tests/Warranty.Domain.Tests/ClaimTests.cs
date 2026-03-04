@@ -3,7 +3,7 @@ using Warranty.Domain.Entities;
 using Warranty.Domain.ValueObjects;
 
 
-namespace Warrant.Domain.Tests;
+namespace Warranty.Domain.Tests;
 
 public class ClaimTests
 {

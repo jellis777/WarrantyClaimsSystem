@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Warranty.Domain\Warranty.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Warranty.Application\Warranty.Application.csproj" />
   </ItemGroup>
 
 </Project>
